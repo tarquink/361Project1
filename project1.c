@@ -82,3 +82,17 @@ void calcFreq(float found[], char fname[]){
 
   fclose(file);
 }
+
+// Rotate the character in parameter ch down the alphabet for the number of   
+// positions as given in parameter num and return the resulting character.
+char rotate ( char ch, int num ){
+  if(isupper(ch)){
+    ch = (((ch - 65) + num) % 26) + 65;
+  }
+  
+  if(islower(ch)){
+    ch = (((ch - 97) + num) % 26) + 97;
+  }
+  
+  return ch;
+}
