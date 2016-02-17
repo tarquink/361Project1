@@ -11,9 +11,8 @@ void decrypt (int, char[]);
 
 int main(){
   float freq[26];
-  float messagefreq[26];
   readFreq(freq, "/home/kevin/Documents/361/361Project1/LetFreq.txt");
-  calcFreq(messagefreq, "/home/kevin/Documents/361/361Project1/test.txt");
+  
   return 0;
 }
 
@@ -38,7 +37,7 @@ void readFreq(float given[], char fname[]){
   fclose(file);
 }
 
-// Read the encoded text from an input file and accumulate the letter frequency                  
+// Read the encoded text from an input file and accumulate the letter frequency               
 // data for the encoded text. Store the frequency data in array found.
 void calcFreq(float found[], char fname[]){
  FILE *file;
@@ -54,31 +53,25 @@ void calcFreq(float found[], char fname[]){
     exit(0);
  }
   
-  while(fscanf(file, "%c", &message[i])!=EOF){
-   i++;
-  }
-  
-  i = 0;
-  while(i != 26){
-   messageFreq[i] = 0.0;
+  while(fscanf(file, " %c", &message[i])!=EOF){
    i++;
   }
   
   i = 0;
   while(message[i] != '\0'){
-    if(tolower(message[i]) >= 'a' && tolower((unsigned char)message[i]) <= 'z'){
-      messageFreq[tolower(message[i]) - 'a']++;
+    if(tolower(message[i]) >= 'a' && tolower(message[i]) <= 'z'){
+      messageFreq[message[i] - 'a']++;
     }
     i++;
   }
-    
+  
   for(i=0; i < 26; i++){
     total = total + messageFreq[i];
   }
   
   for(i=0; i < 26; i++){
-    found[i] = messageFreq[i]/total;
+    messageFreq[i] = messageFreq[i]/total;
   }
-
+  
   fclose(file);
 }
