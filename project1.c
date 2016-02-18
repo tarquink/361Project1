@@ -1,3 +1,6 @@
+// CIS 361 PROJECT 1 KEVIN TARQUINIO
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -12,6 +15,7 @@ void decrypt (int, char[]);
 int main(){
   float freq[26];
   float messagefreq[26];
+  float messagefreq2[26];
   int key;
   
   readFreq(freq, "/home/tarquink/361/361Project1/LetFreq.txt");
@@ -20,6 +24,12 @@ int main(){
   key = findKey(freq, messagefreq);
   
   decrypt(key, "/home/tarquink/361/361Project1/test2.txt");
+  
+  calcFreq(messagefreq, "/home/tarquink/361/361Project1/test.txt");
+  
+  key = findKey(freq, messagefreq);
+  
+  decrypt(key, "/home/tarquink/361/361Project1/test.txt");
   
   return 0;
 }
@@ -137,7 +147,7 @@ int findKey ( float given[], float found[] ){
     
     printf("The key is: %d\n", minShift);
     
-    return minShift;
+    return 26 - minShift;
 
   }
 
@@ -161,7 +171,7 @@ void decrypt (int key, char fname[]){
   
   for(i = 0; i < 200; i++){
     if(islower(message[i]) || isupper(message[i])){    
-      message[i] = rotate(message[i], -key);
+      message[i] = rotate(message[i], key);
     }
   }
   

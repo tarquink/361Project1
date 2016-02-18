@@ -1,0 +1,11 @@
+[eos17:~/361/361Project1]$ make
+make: `project1' is up to date.
+[eos17:~/361/361Project1]$ ./project1
+The key is: 14
+This is the second test with a bigger key that i will be testing right now. thank you
+
+The key is: 7
+Hello world from Kevin and I will now make this a long message by adding more words to this
+
+[eos17:~/361/361Project1]$ 
+
