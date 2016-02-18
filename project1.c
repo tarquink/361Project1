@@ -14,12 +14,12 @@ int main(){
   float messagefreq[26];
   int key;
   
-  readFreq(freq, "/home/kevin/Documents/361/361Project1/LetFreq.txt");
-  calcFreq(messagefreq, "/home/kevin/Documents/361/361Project1/test.txt");
+  readFreq(freq, "/home/tarquink/361/361Project1/LetFreq.txt");
+  calcFreq(messagefreq, "/home/tarquink/361/361Project1/test2.txt");
+  
   key = findKey(freq, messagefreq);
   
-  if(key != 0)
-    decrypt(key, "/home/kevin/Documents/361/361Project1/test.txt");
+  decrypt(key, "/home/tarquink/361/361Project1/test2.txt");
   
   return 0;
 }
@@ -49,7 +49,7 @@ void readFreq(float given[], char fname[]){
 // data for the encoded text. Store the frequency data in array found.
 void calcFreq(float found[], char fname[]){
  FILE *file;
- char message[100];
+ char message[200];
  int i = 0;
  float messageFreq[26];
  float total = 0.0;
@@ -73,7 +73,7 @@ void calcFreq(float found[], char fname[]){
   
   i = 0;
   while(message[i] != '\0'){
-    if(tolower(message[i]) >= 'a' && tolower((unsigned char)message[i]) <= 'z'){
+    if(tolower(message[i]) >= 'a' && tolower(message[i]) <= 'z'){
       messageFreq[tolower(message[i]) - 'a']++;
     }
     i++;
@@ -109,53 +109,44 @@ char rotate ( char ch, int num ){
 // and remember which gives the smallest difference between the frequencies you
 // observed and the frequencies given. Return the key.
 int findKey ( float given[], float found[] ){
-  float dif[26], data[26];
-  int i, n;
-  char ch;
-  float totalMin = 0, minShift =0, total = 0, smallest = 0;
+
+  int i, shift, minShift;
+  float total, diff, minTotal, prevTotal;
   
-  for(i=0; i < 26; i++){
-    dif[i] = 0;
-    data[i] = 0;
-  }
-  
-  for(i=0; i < 26; i++){
+  prevTotal = 5;
+  minTotal = 0;
+
+  for(shift = 0; shift < 26; shift++){
     
     total = 0;
     
-    for(n=0; n<26 ; n++){
-      
-      dif[n] = ((given[n]-found[(n+i)%26])*(given[n]-found[(n+i)%26]));
-      total += dif[n];
-      
-      /*
-      ch = rotate(n+'a',i);
-      data[n] = (found[ch-'a'] - given[ch-'a']);
-      data[n] = data[n] * data[n];
-      total = total + data[n];
-      */
-    }
+    for( i=0 ; i<26 ; i++){
+      diff = given[i]-(found[(i+shift)%26]);
+      diff = diff * diff;
+      total = total + diff;
+      }
     
-    if(dif[i] < smallest){
-      smallest = total;
-      minShift = i;
+    if(total < prevTotal){
+      prevTotal = total;  
+      minTotal = total;
+      minShift = shift;
     }
-    
-    //dif[i] = total;
-    //total = 0;
-  }
-  
 
-  
-  return minShift;
-}
+
+    }
+    
+    printf("The key is: %d\n", minShift);
+    
+    return minShift;
+
+  }
+
 
 // Decrypt the encoded text in the input file using the key and display the decoded text
 void decrypt (int key, char fname[]){
  FILE *file;
- char message[100];
+ char message[200];
  int i = 0;
- 
  
  file = fopen(fname, "r");
  
@@ -164,18 +155,17 @@ void decrypt (int key, char fname[]){
     exit(0);
  }
  
- while(fscanf(file, "%c", &message[i])!=EOF){
+ while(fscanf(file, "%c", &message[i])!= EOF){
    i++;
   }
   
-  for(i = 0; i < 100; i++){
+  for(i = 0; i < 200; i++){
     if(islower(message[i]) || isupper(message[i])){    
-      message[i] = rotate(message[i], key);
+      message[i] = rotate(message[i], -key);
     }
   }
   
   i = 0;
-  
   while(message[i] != '\0'){
     printf("%c",message[i]);
     i++;
